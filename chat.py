@@ -1,72 +1,67 @@
 """
-MODULO DE INTERFAZ PARA CHAT
+Módulo de Interfaz para Chat.
+Proporciona utilidades visuales y de interacción para la terminal.
+
 Autor: ZeroZta
-Versión: 1.0
-Este módulo contiene las herramientas visuales 
-para la terminal.
+Versión: 1.3
 """
+
+import os
 
 # --- FUNCIONES ---
 
 def borrar():
-    """
-    Limpia la terminal de comandos según 
-    el sistema operativo.
-    No requiere parámetros.
-    """
+    """Limpia la consola según el sistema operativo."""
     os.system('clear' if os.name == 'posix' else 'cls')
 
 def mensaje(texto):
     """
-    Imprime un texto encerrado entre dos
-    líneas decorativas de 50 caracteres.
-    Argumento:
-    texto -- El String que se desea mostrar
-    en pantalla.
+    Devuelve un bloque de texto decorado con líneas horizontales.
+    Args:
+        texto (str): El contenido a mostrar.
+    Returns:
+        str: Texto con separadores de 50 caracteres.
     """
-    print("="*50)
-    print(texto)
-    print("="*50)
+    contorno = "=" * 50
+    return f"{contorno}\n{texto}\n{contorno}"
 
 def enter():
-    """
-    Pausa la ejecución del programa hasta
-    que el usuario presione la tecla Enter.
-    """
+    """Pausa la ejecución hasta que se presiona Enter."""
     input("\n Presiona Enter para avanzar...")
 
 def ingresar(pregunta):
     """
-    Muestra una pregunta al usuario y
-    captura su respuesta desde el teclado.
-    Retorna: La cadena de texto (string)
-    ingresada por el usuario.
+    Solicita una entrada al usuario.
+    Args:
+        pregunta (str): Instrucción para el usuario.
+    Returns:
+        str: Respuesta del usuario.
     """
-    respuesta = input(f"\n {pregunta}")
-    return respuesta
+    return input(f"\n {pregunta}")
 
-def barra(capacidad, puntos, divisor):
+def barra(capacidad, puntos):
     """
-    Calcula y despliega una barra de 
-    progreso visual compuesta por '/' y '_'.
+    Genera una barra de progreso visual de 50 caracteres de largo.
     
-    Parámetros:
-    capacidad -- Valor máximo de 
-    referencia (int).
-    puntos    -- Valor actual a representar 
-    (int).
-    divisor   -- Factor de escala para la 
-    longitud de la barra (ej. 100).
-    """
-    # Lógica de cálculo
-    porcentaje_total = int((puntos)/(capacidad/divisor))
-    
-    porcentaje_negativo = int((divisor - porcentaje_total)/(2))
-    if porcentaje_negativo <= 0:
-        porcentaje_negativo = 0
+    Args:
+        capacidad (int/float): El valor que representa el 100%.
+        puntos (int/float): El valor actual.
         
-    porcentaje_positivo = int((porcentaje_total)/(2))
+    Returns:
+        str: Representación visual con '/' para lleno, '_' para vacío y el %.
+        None: Si la capacidad es 0.
+    """
+    try:
+        porcentaje_total = int((puntos * 100) / capacidad)
+    except ZeroDivisionError:
+        print("Error: La capacidad debe ser mayor a cero.")
+        return None
+
+    # Ajuste para que la barra visual no se desborde (0 a 100)
+    llenado_limite = max(0, min(porcentaje_total, 100))
     
-    diagonal = "/" * porcentaje_positivo
-    barra_baja = "_" * porcentaje_negativo
-    mensaje(f"{diagonal}{barra_baja}  {porcentaje_total}%")
+    # Dibujo de la barra (cada carácter representa 2%)
+    positivo = int(llenado_limite / 2)
+    negativo = int((100 - llenado_limite) / 2)
+    
+    return f"{'/' * positivo}{'_' * negativo}  {porcentaje_total}%"
