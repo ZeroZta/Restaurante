@@ -1,56 +1,89 @@
-# Librerias:
+
+# - Libreria:
+# ===============
+import sys
+import pygame
 import random
 import chat
 import Clientes
-import pygame
-import sys
+# ===============
 
-# Funciones:
-
-# Objetos:
-
-# Instancias:
+# - Instancia:
+# ===============
 pygame.init()
+# ===============
 
-# variables:
-# Configuración de la ventana
-ANCHO = 800
-ALTO = 600
-pantalla = pygame.display.set_mode((ANCHO, ALTO))
-# Colores (R, G, B)
-BLANCO = (255, 255, 255)
-ROSA = (255, 0, 93)
-AZUL = (54,173, 154)
-VERDE = (0, 255, 0)
-AMARILLO = (255, 255, 0)
-ROJO = (255, 0, 0)
-VIOLETA = (128, 0, 128)
-# Control de FPS (Fotogramas por segundo)
+# - Variables
+# ===============
+# Pantalla:
+ancho, largo = 800, 600
+pantalla = pygame.display.set_mode((ancho, largo))
 reloj = pygame.time.Clock()
 
-# Inicio:
+# Circulo:
+radio = 50
+radio2 = 100
+centrado_x = ancho // 2
+centrado_y = largo // 2
+centradoXY = (centrado_x, centrado_y)
+centradoXY2 = (centrado_x, centrado_y)
+# Mouse:
+flecha = [(1, 1), (5, 35), (10, 22), (33, 43), (42, 34), (21, 10), (35, 5)]
+# Colores:
+rojo = (255, 0, 0)
+verde = (0, 255, 0)
+azul = (0, 0, 255)
+blanco = (255, 255, 255)
+negro = (0,0,0)
+magenta = (255, 0, 255)
+amarillo = (255, 239, 55)
+# ===============
+
+# - Funciones:
+# ===============
+# ===============
+
+# - Objetos
+# ===============
+# ===============
+
+# - Inicio:
+# ===============
 # Configuración de la ventana
 pygame.display.set_caption("Mi primer juego - Sigue el mouse")
-
-# Bucle Principal del Juego
 while True:
-    # --- Manejo de Eventos ---
-    for evento in pygame.event.get():
-        if evento.type == pygame.QUIT: # Si cierras la ventana
+    # 1. Gestion de Eventos:
+    # Salir:
+    for evento in pygame.event.get():        
+        if evento.type == pygame.QUIT:
             pygame.quit()
             sys.exit()
+        
+        """
+        if evento.type == pygame.MOUSEBUTTONDOWN:
+             centradoXY = evento.pos
+        """
 
-    # --- Dibujo ---
-    pantalla.fill(BLANCO)  # Limpiar la pantalla con un fondo blanco
-    # Ubicación del mouse:
-    mouse_x, mouse_y = pygame.mouse.get_pos()
-    rect_x = mouse_x - 200
-    rect_y = mouse_y - 150
+    # 2. Logica:
+        #Mouse logica:
+    px,py = pygame.mouse.get_pos()
+    flecha_transformada = []
+    for posicion in flecha:
+        mx = (posicion[0]*2)+(px)
+        my = (posicion[1]*2) + (py)
+        flecha_transformada.append((mx,my))
+    
 
-    pygame.draw.rect(pantalla, ROSA, [rect_x, rect_y, 400, 300])
-    pygame.draw.rect(pantalla, VERDE, [rect_x+100, rect_y + 75, 200, 150])
-    pygame.draw.rect(pantalla, AMARILLO, [rect_x+150, rect_y + 112, 100, 75])
-    pygame.display.flip()
-
-    # Mantener el juego a 60 FPS
+    # 3. Dibujo:
+        # Fondo:
+    pantalla.fill(blanco)
+    
+        # Frente:
+            # Mouse:
+    pygame.draw.polygon(pantalla,amarillo,flecha_transformada,0)
+    pygame.draw.polygon(pantalla,negro,flecha_transformada,5)
+    # 4. Actualizacion de pantalla:
+    pygame.display.update()
     reloj.tick(60)
+
+# ===============
