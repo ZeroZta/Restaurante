@@ -42,11 +42,11 @@ def ingresar(pregunta):
 def barra(capacidad, puntos):
     """
     Genera una barra de progreso visual de 50 caracteres de largo.
-    
+
     Args:
         capacidad (int/float): El valor que representa el 100%.
         puntos (int/float): El valor actual.
-        
+
     Returns:
         str: Representación visual con '/' para lleno, '_' para vacío y el %.
         None: Si la capacidad es 0.
@@ -59,9 +59,9 @@ def barra(capacidad, puntos):
 
     # Ajuste para que la barra visual no se desborde (0 a 100)
     llenado_limite = max(0, min(porcentaje_total, 100))
-    
+
     # Dibujo de la barra (cada carácter representa 2%)
     positivo = int(llenado_limite / 2)
     negativo = int((100 - llenado_limite) / 2)
-    
+
     return f"{'/' * positivo}{'_' * negativo}  {porcentaje_total}%"
